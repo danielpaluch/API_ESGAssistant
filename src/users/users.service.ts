@@ -6,7 +6,6 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject('USER_MODEL') private userModel: Model<User>) {}
   create(createUserInput: CreateUserInput) {
     return 'This action adds a new user';
   }
