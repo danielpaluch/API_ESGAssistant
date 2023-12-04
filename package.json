@@ -30,6 +30,7 @@
     "@nestjs/mongoose": "^10.0.2",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-fastify": "^10.2.10",
+    "apollo-server-core": "^3.13.0",
     "graphql": "^16.8.1",
     "mongoose": "^8.0.2",
     "reflect-metadata": "^0.1.13",
