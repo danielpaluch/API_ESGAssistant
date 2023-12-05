@@ -12,11 +12,6 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
-  app.enableCors({
-    credentials: true,
-    origin: '*',
-  });
-
   await app.listen(4200, (err: Error, appUri: string) => {
     if (err) {
       console.log(err);
