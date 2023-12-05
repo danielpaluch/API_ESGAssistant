@@ -7,6 +7,7 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -16,6 +17,13 @@ import { UserModule } from './user/user.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    }),
+    GraphQLModule.forRoot({
+      cors: {
+        credentials: true,
+        // TODO: Change this to the production URL
+        origin: '*',
+      },
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -32,6 +40,7 @@ import { UserModule } from './user/user.module';
       cache: true,
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [AppService, AppResolver],
