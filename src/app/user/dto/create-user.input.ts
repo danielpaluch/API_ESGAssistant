@@ -22,7 +22,4 @@ export class CreateUserInput {
 
   @Field(() => String)
   company: string;
-
-  @Field(() => Date)
-  createdAt: Date;
 }

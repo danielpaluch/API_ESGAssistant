@@ -11,29 +11,29 @@ export class UserResolver {
 
   @Mutation(() => User)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput);
+    return this.userService.createUser(createUserInput);
   }
 
   @Query(() => [User], { name: 'user' })
   findAll() {
-    return this.userService.findAll();
+    return this.userService.getAllUsers();
   }
 
-  @Query(() => User, { name: 'user' })
-  findOne(
+  @Query(() => User, { name: 'userById' })
+  getUserById(
     @Args('id', { type: () => String }) id: MongooseSchema.Types.ObjectId,
   ) {
-    return this.userService.findOne(id);
+    return this.userService.getUserById(id);
   }
 
   @Mutation(() => User)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userService.update(updateUserInput._id, updateUserInput);
+    return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 
   @Mutation(() => User)
   removeUser(
-    @Args('id', { type: () => String }) id: MongooseSchema.Types.ObjectId,
+    @Args('id', { type: () => Int }) id: MongooseSchema.Types.ObjectId,
   ) {
     return this.userService.remove(id);
   }

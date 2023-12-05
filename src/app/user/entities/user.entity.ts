@@ -35,8 +35,7 @@ export class User {
   @Field(() => String)
   @Prop({ required: true })
   company: string;
-
-  @Field(() => Date)
-  @Prop({ required: true })
-  createdAt: Date;
 }
+
+export type UserDocument = User & Document;
+export const UserSchema = SchemaFactory.createForClass(User);
