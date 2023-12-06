@@ -50,16 +50,18 @@ export class UserService {
     return this.userModel.findById(id).exec();
   }
 
-  findOne(email: string) {
+  getUserByEmail(email: string) {
     const user = this.userModel.findOne({ email }).exec();
     return user;
   }
 
-  updateUser(
+  async updateUser(
     id: MongooseSchema.Types.ObjectId,
     updateUserInput: UpdateUserInput,
   ) {
-    return this.userModel.findByIdAndUpdate(id, updateUserInput).exec();
+    return await this.userModel
+      .findByIdAndUpdate(id, updateUserInput, { new: true })
+      .exec();
   }
 
   remove(id: MongooseSchema.Types.ObjectId) {
