@@ -14,8 +14,8 @@ export class UserResolver {
     return this.userService.createUser(createUserInput);
   }
 
-  @Query(() => [User], { name: 'user' })
-  findAll() {
+  @Query(() => [User], { name: 'users' })
+  getAllUsers() {
     return this.userService.getAllUsers();
   }
 
@@ -40,6 +40,6 @@ export class UserResolver {
   removeUser(
     @Args('id', { type: () => Int }) id: MongooseSchema.Types.ObjectId,
   ) {
-    return this.userService.remove(id);
+    return this.userService.removeUser(id);
   }
 }

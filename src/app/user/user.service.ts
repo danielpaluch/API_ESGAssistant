@@ -42,16 +42,16 @@ export class UserService {
     return user;
   }
 
-  getAllUsers() {
-    return this.userModel.find().exec();
+  async getAllUsers() {
+    return await this.userModel.find().exec();
   }
 
-  getUserById(id: MongooseSchema.Types.ObjectId) {
-    return this.userModel.findById(id).exec();
+  async getUserById(id: MongooseSchema.Types.ObjectId) {
+    return await this.userModel.findById(id).exec();
   }
 
-  getUserByEmail(email: string) {
-    const user = this.userModel.findOne({ email }).exec();
+  async getUserByEmail(email: string) {
+    const user = await this.userModel.findOne({ email }).exec();
     return user;
   }
 
@@ -64,7 +64,7 @@ export class UserService {
       .exec();
   }
 
-  remove(id: MongooseSchema.Types.ObjectId) {
-    return this.userModel.findByIdAndDelete(id).exec();
+  async removeUser(id: MongooseSchema.Types.ObjectId) {
+    return await this.userModel.findByIdAndDelete(id).exec();
   }
 }

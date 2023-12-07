@@ -116,7 +116,7 @@ describe('UserService', () => {
   });
 
   it('should delete a user', async () => {
-    const deletedUser = await service.remove(updateUserInput._id);
+    const deletedUser = await service.removeUser(updateUserInput._id);
     expect(deletedUser).toBeDefined();
   });
 
