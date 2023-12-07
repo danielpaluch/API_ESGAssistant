@@ -18,13 +18,6 @@ import { UserModule } from './user/user.module';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
-    GraphQLModule.forRoot({
-      cors: {
-        credentials: true,
-        // TODO: Change this to the production URL
-        origin: '*',
-      },
-    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

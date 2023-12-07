@@ -14,8 +14,8 @@ export class UserResolver {
     return this.userService.createUser(createUserInput);
   }
 
-  @Query(() => [User], { name: 'user' })
-  findAll() {
+  @Query(() => [User], { name: 'users' })
+  getAllUsers() {
     return this.userService.getAllUsers();
   }
 
@@ -24,6 +24,11 @@ export class UserResolver {
     @Args('id', { type: () => String }) id: MongooseSchema.Types.ObjectId,
   ) {
     return this.userService.getUserById(id);
+  }
+
+  @Query(() => User, { name: 'userByEmail' })
+  getUserByEmail(@Args('email') email: string) {
+    return this.userService.getUserByEmail(email);
   }
 
   @Mutation(() => User)
@@ -35,6 +40,6 @@ export class UserResolver {
   removeUser(
     @Args('id', { type: () => Int }) id: MongooseSchema.Types.ObjectId,
   ) {
-    return this.userService.remove(id);
+    return this.userService.removeUser(id);
   }
 }
