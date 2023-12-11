@@ -72,7 +72,7 @@ describe('AuthService', () => {
     expect(user.password).not.toBe(signupUserInput.password);
   });
 
-  // TODO: Add
+  // Add error expectation
   it('should throw an error if user already exists', async () => {
     try {
       await service.signUp(signupUserInput);
@@ -102,11 +102,10 @@ describe('AuthService', () => {
   });
 
   it("should login a user and return the user's data and a token", async () => {
-    const { user: user_, authToken } = await service.login(user);
+    const response = service.login(user);
 
-    expect(user_).toBeDefined();
-    expect(user_.firstName).toBe(signupUserInput.firstName);
-
-    expect(authToken).toBeDefined();
+    expect(response).toBeDefined();
+    expect(response.authToken).toBeDefined();
+    expect(response.user.firstName).toBe(signupUserInput.firstName);
   });
 });

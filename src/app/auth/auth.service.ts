@@ -16,14 +16,20 @@ export class AuthService {
   ) {}
   async validateUser(loginUserInput: LoginUserInput) {
     const { email, password } = loginUserInput;
+
     const user = await this.userService.getUserByEmail(email);
 
-    const isMatch = await bcrypt.compare(password, user?.password);
-    if (user && isMatch) {
-      return user;
+    if (!user) {
+      throw new Error('User not found');
     }
 
-    return null;
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new Error('Password or email address incorrect');
+    }
+
+    return user;
   }
 
   login(user: User) {
@@ -32,27 +38,34 @@ export class AuthService {
       authToken: this.jwtService.sign(
         {
           email: user.email,
+          firstName: user.firstName,
           sub: user._id,
         },
         {
-          secret: process.env.JWT_SECRET,
+          secret:
+            this.configService.get<string>('JWT_SECRET') || 'testingEnvSecret',
         },
       ),
     };
   }
 
-  async signUp(payload: CreateUserInput) {
-    const user = await this.userService.getUserByEmail(payload.email);
+  async signUp(createUserInput: CreateUserInput) {
+    const user = await this.userService.getUserByEmail(createUserInput.email);
 
     if (user) {
       throw new Error('User already exists');
     }
 
     const hash = await bcrypt.hash(
-      payload.password,
-      Number(this.configService.get<string>('SALT')),
+      createUserInput.password,
+      Number(this.configService.get<string>('SALT_ROUNDS')),
     );
 
-    return this.userService.createUser({ ...payload, password: hash });
+    const createdUser = await this.userService.createUser({
+      ...createUserInput,
+      password: hash,
+    });
+
+    return createdUser;
   }
 }

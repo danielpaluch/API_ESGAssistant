@@ -14,7 +14,7 @@ export class UserService {
   async createUser(createUserInput: CreateUserInput) {
     const hash = await bcrypt.hash(
       createUserInput.password,
-      Number(process.env.SALT),
+      Number(process.env.SALT_ROUNDS),
     );
 
     const createdUser = new this.userModel({
@@ -25,8 +25,9 @@ export class UserService {
     return createdUser.save();
   }
 
-  async loginUser(loginInput: LoginUserInput) {
+  async validateUser(loginInput: LoginUserInput) {
     const { email, password } = loginInput;
+
     const user = await this.userModel.findOne({ email }).exec();
 
     if (!user) {
@@ -51,8 +52,7 @@ export class UserService {
   }
 
   async getUserByEmail(email: string) {
-    const user = await this.userModel.findOne({ email }).exec();
-    return user;
+    return await this.userModel.findOne({ email });
   }
 
   async updateUser(

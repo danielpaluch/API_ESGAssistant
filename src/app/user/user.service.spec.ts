@@ -77,6 +77,15 @@ describe('UserService', () => {
     userId = user.id;
   });
 
+  it('should validate a user', async () => {
+    const user = await service.validateUser({
+      email: createUserInput.email,
+      password: createUserInput.password,
+    });
+    expect(user).toBeDefined();
+    expect(user.id).toBe(userId);
+  });
+
   it('should get a list of users', async () => {
     const users = await service.getAllUsers();
     expect(users).toBeDefined();
