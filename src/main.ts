@@ -4,6 +4,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import * as cors from 'cors';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -12,10 +13,12 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
-  app.enableCors({
-    credentials: true,
-    origin: '*',
-  });
+  app.use(
+    cors<cors.CorsRequest>({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    }),
+  );
 
   await app.listen(4200, (err: Error, appUri: string) => {
     if (err) {
