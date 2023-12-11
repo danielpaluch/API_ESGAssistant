@@ -3,6 +3,8 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as Chance from 'chance';
+import { Schema as MongooSchema } from 'mongoose';
+import { USER_ALREADY_EXISTS_EXCEPTION } from '../common/exceptions/user.exception';
 import {
   closeInMongodConnection,
   rootMongooseTestModule,
@@ -24,6 +26,11 @@ const signupUserInput: CreateUserInput = {
   role: chance.string({ length: 20 }),
   phone: chance.phone(),
   company: chance.company(),
+};
+
+const updatePasswordInput = {
+  _id: new MongooSchema.Types.ObjectId(''),
+  password: 'NewFakePassword1?',
 };
 
 describe('AuthService', () => {
@@ -63,6 +70,7 @@ describe('AuthService', () => {
     const user = await service.signUp(signupUserInput);
 
     expect(user).toBeDefined();
+    expect(user._id).toBeDefined();
     expect(user.firstName).toBe(signupUserInput.firstName);
     expect(user.lastName).toBe(signupUserInput.lastName);
     expect(user.email).toBe(signupUserInput.email);
@@ -70,14 +78,24 @@ describe('AuthService', () => {
     expect(user.phone).toBe(signupUserInput.phone);
     expect(user.company).toBe(signupUserInput.company);
     expect(user.password).not.toBe(signupUserInput.password);
+    updatePasswordInput._id = user._id;
   });
 
-  // Add error expectation
+  it("should update a user's password", async () => {
+    const user = await service.updatePassword(updatePasswordInput);
+
+    expect(user).toBeDefined();
+    expect(user.password).not.toBe(signupUserInput.password);
+    expect(user.password).not.toBe(updatePasswordInput.password);
+  });
+
   it('should throw an error if user already exists', async () => {
     try {
       await service.signUp(signupUserInput);
     } catch (error) {
       expect(error).toBeDefined();
+      expect(error.message).toBeDefined();
+      expect(error.message).toBe(USER_ALREADY_EXISTS_EXCEPTION);
     }
   });
 

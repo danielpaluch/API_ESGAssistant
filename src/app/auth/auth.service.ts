@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { USER_ALREADY_EXISTS_EXCEPTION } from '../common/exceptions/user.exception';
 import { CreateUserInput } from '../user/dto/create-user.input';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { LoginUserInput } from './dto/login-user.input';
+import { UpdatePasswordInput } from './dto/update-password.input';
 
 @Injectable()
 export class AuthService {
@@ -53,7 +55,7 @@ export class AuthService {
     const user = await this.userService.getUserByEmail(createUserInput.email);
 
     if (user) {
-      throw new Error('User already exists');
+      throw new Error(USER_ALREADY_EXISTS_EXCEPTION);
     }
 
     const hash = await bcrypt.hash(
@@ -67,5 +69,21 @@ export class AuthService {
     });
 
     return createdUser;
+  }
+
+  async updatePassword(updatePasswordInput: UpdatePasswordInput) {
+    const plainPassword = updatePasswordInput.password;
+
+    const hash = await bcrypt.hash(
+      plainPassword,
+      Number(this.configService.get<string>('SALT_ROUNDS')),
+    );
+
+    const updatedUser = await this.userService.updatePassword({
+      ...updatePasswordInput,
+      password: hash,
+    });
+
+    return updatedUser;
   }
 }

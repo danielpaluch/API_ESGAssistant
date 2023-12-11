@@ -1,6 +1,7 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdatePasswordInput } from './dto/update-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
@@ -34,6 +35,13 @@ export class UserResolver {
   @Mutation(() => User)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
+  }
+
+  @Mutation(() => User)
+  updatePassword(
+    @Args('updatePasswordInput') updatePasswordInput: UpdatePasswordInput,
+  ) {
+    return this.userService.updatePassword(updatePasswordInput);
   }
 
   @Mutation(() => User)
