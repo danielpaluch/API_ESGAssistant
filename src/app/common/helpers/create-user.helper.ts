@@ -17,7 +17,7 @@ export const CREATE_USER_MUTATION = `mutation CreateUser($createUserInput: Creat
     }
 }`;
 
-export const generateCreateUserVariables = () => {
+export const generateUserVariables = () => {
   return {
     createUserInput: {
       firstName: chance.name(),
