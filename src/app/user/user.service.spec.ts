@@ -8,6 +8,7 @@ import {
   rootMongooseTestModule,
 } from '../common/helpers/mongoose.helper';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdatePasswordInput } from './dto/update-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User, UserSchema } from './entities/user.entity';
 import { UserService } from './user.service';
@@ -33,6 +34,11 @@ const updateUserInput: UpdateUserInput = {
   _id: new MongooSchema.Types.ObjectId(''),
   firstName: chance.name(),
   role: chance.string({ length: UPDATED_ROLE_LENGTH }),
+};
+
+const updatePasswordInput: UpdatePasswordInput = {
+  _id: new MongooSchema.Types.ObjectId(''),
+  password: 'NewFakePassword1?',
 };
 
 describe('UserService', () => {
@@ -74,7 +80,17 @@ describe('UserService', () => {
     expect(user.email).toBe(createUserInput.email);
     expect(user.password).not.toBe(createUserInput.password);
     updateUserInput._id = user.id;
+    updatePasswordInput._id = user.id;
     userId = user.id;
+  });
+
+  it('should validate a user', async () => {
+    const user = await service.validateUser({
+      email: createUserInput.email,
+      password: createUserInput.password,
+    });
+    expect(user).toBeDefined();
+    expect(user.id).toBe(userId);
   });
 
   it('should get a list of users', async () => {
@@ -113,6 +129,14 @@ describe('UserService', () => {
     expect(updatedUser.company).toBe(createUserInput.company);
     expect(updatedUser.email).toBe(createUserInput.email);
     expect(updatedUser.password).not.toBe(createUserInput.password);
+  });
+
+  it('should update password', async () => {
+    const updatedUser = await service.updatePassword(updatePasswordInput);
+    expect(updatedUser).toBeDefined();
+    expect(updatedUser.id).toBe(userId);
+    expect(updatedUser.password).not.toBe(createUserInput.password);
+    expect(updatedUser.password).toBe(updatePasswordInput.password);
   });
 
   it('should delete a user', async () => {

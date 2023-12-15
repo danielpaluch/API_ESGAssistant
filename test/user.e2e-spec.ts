@@ -5,7 +5,7 @@ import { AppModule } from '../src/app/app.module';
 import {
   CREATE_USER_MUTATION,
   CREATE_USER_OPERATION_NAME,
-  generateCreateUserVariables,
+  generateUserVariables,
 } from '../src/app/common/helpers/create-user.helper';
 import { GRAPHQL_ENDPOINT } from '../src/app/common/helpers/graphql.helper';
 import { User } from '../src/app/user/entities/user.entity';
@@ -30,7 +30,7 @@ describe('UserResolver (e2e)', () => {
   });
 
   it('should create a user with user mutation', () => {
-    const createUserInput = generateCreateUserVariables().createUserInput;
+    const createUserInput = generateUserVariables().createUserInput;
     return request(app.getHttpServer())
       .post(GRAPHQL_ENDPOINT)
       .send({

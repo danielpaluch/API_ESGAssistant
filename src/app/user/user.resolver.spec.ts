@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as Chance from 'chance';
 import { Schema as MongooSchema } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdatePasswordInput } from './dto/update-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
@@ -22,6 +23,11 @@ const createUserInput: CreateUserInput = {
 const updateUserInput: UpdateUserInput = {
   _id: userId,
   firstName: chance.name(),
+};
+
+const updatePasswordInput: UpdatePasswordInput = {
+  _id: userId,
+  password: 'NewFakePassword1?',
 };
 
 describe('UserResolver', () => {
@@ -58,6 +64,12 @@ describe('UserResolver', () => {
               return {
                 _id: userId,
                 ...updateUserInput,
+              };
+            }),
+            updatePassword: jest.fn(() => {
+              return {
+                _id: userId,
+                ...updatePasswordInput,
               };
             }),
             removeUser: jest.fn(() => {
@@ -107,6 +119,13 @@ describe('UserResolver', () => {
     expect(user).toBeDefined();
     expect(user._id).toBe(userId);
     expect(user.firstName).toBe(updateUserInput.firstName);
+  });
+
+  it("should update a user's password", async () => {
+    const user = await resolver.updatePassword(updatePasswordInput);
+    expect(user).toBeDefined();
+    expect(user._id).toBe(userId);
+    expect(user.password).toBe(updatePasswordInput.password);
   });
 
   it('should remove a user', async () => {

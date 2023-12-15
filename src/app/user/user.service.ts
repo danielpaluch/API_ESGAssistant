@@ -3,7 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model, Schema as MongooseSchema } from 'mongoose';
 import { LoginUserInput } from '../auth/dto/login-user.input';
+import {
+  USER_INCORRECT_PASSWORD_OR_EMAIL_EXCEPTION,
+  USER_NOT_FOUND_EXCEPTION,
+} from '../common/exceptions/user.exception';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdatePasswordInput } from './dto/update-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User, UserDocument } from './entities/user.entity';
 
@@ -14,7 +19,7 @@ export class UserService {
   async createUser(createUserInput: CreateUserInput) {
     const hash = await bcrypt.hash(
       createUserInput.password,
-      Number(process.env.SALT),
+      Number(process.env.SALT_ROUNDS),
     );
 
     const createdUser = new this.userModel({
@@ -25,18 +30,19 @@ export class UserService {
     return createdUser.save();
   }
 
-  async loginUser(loginInput: LoginUserInput) {
+  async validateUser(loginInput: LoginUserInput) {
     const { email, password } = loginInput;
+
     const user = await this.userModel.findOne({ email }).exec();
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error(USER_NOT_FOUND_EXCEPTION);
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      throw new Error('Password or email address incorrect');
+      throw new Error(USER_INCORRECT_PASSWORD_OR_EMAIL_EXCEPTION);
     }
 
     return user;
@@ -51,8 +57,7 @@ export class UserService {
   }
 
   async getUserByEmail(email: string) {
-    const user = await this.userModel.findOne({ email }).exec();
-    return user;
+    return await this.userModel.findOne({ email });
   }
 
   async updateUser(
@@ -61,6 +66,14 @@ export class UserService {
   ) {
     return await this.userModel
       .findByIdAndUpdate(id, updateUserInput, { new: true })
+      .exec();
+  }
+
+  async updatePassword(updatePasswordInput: UpdatePasswordInput) {
+    return await this.userModel
+      .findByIdAndUpdate(updatePasswordInput._id, updatePasswordInput, {
+        new: true,
+      })
       .exec();
   }
 
