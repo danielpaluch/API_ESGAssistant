@@ -7,7 +7,6 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -33,7 +32,6 @@ import { UserModule } from './user/user.module';
       cache: true,
     }),
     UserModule,
-    AuthModule,
   ],
   controllers: [],
   providers: [AppService, AppResolver],
