@@ -2,53 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  _id: String!
-  firstName: String!
-  lastName: String!
-  email: String!
-  password: String!
-  role: String!
-  phone: String!
-  company: String!
-}
-
-type LoginUserResponse {
-  user: User!
-  authToken: String!
-}
-
 type Query {
   getHello: String!
-  users: [User!]!
-  userById(id: String!): User!
-  userByEmail(email: String!): User!
-}
-
-type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
-  login: LoginUserResponse!
-}
-
-input CreateUserInput {
-  firstName: String!
-  lastName: String!
-  email: String!
-  password: String!
-  role: String!
-  phone: String!
-  company: String!
-}
-
-input UpdateUserInput {
-  firstName: String
-  lastName: String
-  email: String
-  password: String
-  role: String
-  phone: String
-  company: String
-  _id: String!
 }

@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
@@ -8,6 +9,8 @@ import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
+  // Because we are using the @Injectable() decorator in the UserService class,
+  // we can inject the UserService class into the UserResolver class.
   constructor(private readonly userService: UserService) {}
 
   @Mutation(() => User)

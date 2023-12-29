@@ -2,19 +2,40 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model, Schema as MongooseSchema } from 'mongoose';
-import { LoginUserInput } from '../auth/dto/login-user.input';
 import {
   USER_INCORRECT_PASSWORD_OR_EMAIL_EXCEPTION,
   USER_NOT_FOUND_EXCEPTION,
 } from '../common/exceptions/user.exception';
 import { CreateUserInput } from './dto/create-user.input';
+import { LoginUserInput } from './dto/login-user.input';
 import { UpdatePasswordInput } from './dto/update-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User, UserDocument } from './entities/user.entity';
 
+// The @Injectable() decorator marks a class as a provider.
+// Nest will instantiate a class only once, and inject that single instance
+// wherever it is requested.
+// In other words, we are creating a singleton service.
+// We can inject this service into other classes using the @Injectable() decorator.
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  private readonly users = [
+    {
+      userId: 1,
+      username: 'john',
+      password: 'changeme',
+    },
+    {
+      userId: 2,
+      username: 'maria',
+      password: 'guess',
+    },
+  ];
+
+  async findOne(username: string) {
+    return this.users.find((user) => user.username === username);
+  }
 
   async createUser(createUserInput: CreateUserInput) {
     const hash = await bcrypt.hash(
