@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
+import { LoginUserInput } from './dto/login-user.input';
 import { UpdatePasswordInput } from './dto/update-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
@@ -16,6 +17,11 @@ export class UserResolver {
   @Mutation(() => User)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return this.userService.createUser(createUserInput);
+  }
+
+  @Query(() => User, { name: 'login' })
+  login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
+    return this.userService.validateUser(loginUserInput);
   }
 
   @Query(() => [User], { name: 'users' })
