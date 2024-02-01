@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AuthGuard } from '@nestjs/passport';
 import { Schema as MongooseSchema } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
 import { LoginUserInput } from './dto/login-user.input';
@@ -24,11 +25,13 @@ export class UserResolver {
     return this.userService.validateUser(loginUserInput);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Query(() => [User], { name: 'users' })
   getAllUsers() {
     return this.userService.getAllUsers();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Query(() => User, { name: 'userById' })
   getUserById(
     @Args('id', { type: () => String }) id: MongooseSchema.Types.ObjectId,
@@ -36,16 +39,19 @@ export class UserResolver {
     return this.userService.getUserById(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Query(() => User, { name: 'userByEmail' })
   getUserByEmail(@Args('email') email: string) {
     return this.userService.getUserByEmail(email);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Mutation(() => User)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Mutation(() => User)
   updatePassword(
     @Args('updatePasswordInput') updatePasswordInput: UpdatePasswordInput,
@@ -53,6 +59,7 @@ export class UserResolver {
     return this.userService.updatePassword(updatePasswordInput);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Mutation(() => User)
   removeUser(
     @Args('id', { type: () => Int }) id: MongooseSchema.Types.ObjectId,

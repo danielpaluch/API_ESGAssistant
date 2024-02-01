@@ -33,6 +33,7 @@ import { UserModule } from './user/user.module';
       cache: true,
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [AppService, AppResolver],
