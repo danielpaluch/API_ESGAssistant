@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { join } from 'path';
+import { AuthModule } from 'src/auth/auth.module';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
