@@ -13,7 +13,6 @@ import { UserModule } from './user/user.module';
 @Module({
   imports: [
     UserModule,
-    AuthModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),

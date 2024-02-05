@@ -20,7 +20,7 @@ export class UserResolver {
     return this.userService.createUser(createUserInput);
   }
 
-  @Query(() => User, { name: 'logIn' })
+  @Query(() => User, { name: 'login' })
   login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
     return this.userService.validateUser(loginUserInput);
   }
@@ -31,6 +31,7 @@ export class UserResolver {
     return this.userService.getAllUsers();
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => User, { name: 'userById' })
   getUserById(
     @Args('id', { type: () => String }) id: MongooseSchema.Types.ObjectId,
@@ -38,16 +39,19 @@ export class UserResolver {
     return this.userService.getUserById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => User, { name: 'userByEmail' })
   getUserByEmail(@Args('email') email: string) {
     return this.userService.getUserByEmail(email);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(() => User)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(() => User)
   updatePassword(
     @Args('updatePasswordInput') updatePasswordInput: UpdatePasswordInput,
@@ -55,6 +59,7 @@ export class UserResolver {
     return this.userService.updatePassword(updatePasswordInput);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(() => User)
   removeUser(
     @Args('id', { type: () => Int }) id: MongooseSchema.Types.ObjectId,

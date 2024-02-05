@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { GetVerificationKey, expressjwt } from 'express-jwt';
 import { expressJwtSecret } from 'jwks-rsa';
 import { promisify } from 'util';
@@ -18,8 +19,9 @@ export class AuthGuard implements CanActivate {
     this.AUDIENCE = this.configService.get('AUDIENCE');
   }
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req = context.switchToHttp().getRequest();
-    const res = context.switchToHttp().getResponse();
+    const ctx = GqlExecutionContext.create(context);
+    const req = ctx.getContext().req;
+    const res = ctx.getContext().res;
     const checkJwt = promisify(
       expressjwt({
         secret: expressJwtSecret({

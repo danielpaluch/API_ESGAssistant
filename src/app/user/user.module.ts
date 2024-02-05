@@ -7,10 +7,11 @@ import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 
 @Module({
-  providers: [UserService, UserResolver, ConfigModule],
+  providers: [UserService, UserResolver],
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     AuthModule,
+    ConfigModule,
   ],
   exports: [UserService],
 })
