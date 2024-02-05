@@ -12,7 +12,6 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    UserModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -33,6 +32,8 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       cache: true,
     }),
+    UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [AppService, AppResolver],

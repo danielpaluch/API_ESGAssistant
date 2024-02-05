@@ -20,10 +20,10 @@ export class UserResolver {
     return this.userService.createUser(createUserInput);
   }
 
-  @Query(() => User, { name: 'login' })
-  login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
-    return this.userService.validateUser(loginUserInput);
-  }
+  // @Query(() => User, { name: 'login' })
+  // login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
+  //   return this.userService.validateUser(loginUserInput);
+  // }
 
   @UseGuards(AuthGuard)
   @Query(() => [User], { name: 'users' })
