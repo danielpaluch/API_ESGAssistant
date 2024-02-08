@@ -24,6 +24,7 @@ function checkEnvironment(configService: ConfigService) {
 }
 
 async function bootstrap() {
+  console.log('started');
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const configService = app.get<ConfigService>(ConfigService);
