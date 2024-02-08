@@ -12,8 +12,7 @@ import { AuthService } from './auth.service';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     forwardRef(() => UserModule),
   ],
-  controllers: [AuthResolver],
-  providers: [AuthGuard, AuthService],
+  providers: [AuthGuard, AuthService, AuthResolver],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -35,6 +35,10 @@ export class User {
   @Field(() => String)
   @Prop({ required: true })
   company: string;
+
+  @Field(() => String)
+  @Prop()
+  access_token: string;
 }
 
 export type UserDocument = User & Document;

@@ -11,14 +11,15 @@ type User {
   role: String!
   phone: String!
   company: String!
+  access_token: String!
 }
 
 type Query {
   getHello: String!
-  login(loginUserInput: LoginUserInput!): User!
   users: [User!]!
   userById(id: String!): User!
   userByEmail(email: String!): User!
+  login(loginUserInput: LoginUserInput!): User!
 }
 
 input LoginUserInput {
