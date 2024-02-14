@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ACCESS_TOKEN_ERROR } from '../common/exceptions/auth.exception';
 import { LoginUserInput } from '../user/dto/login-user.input';
 import { UserService } from '../user/user.service';
 
@@ -30,26 +31,39 @@ export class AuthService {
     // Get body from user object
     const access_token = await this.getAuthAccessToken();
 
+    if (!access_token) {
+      throw new Error(ACCESS_TOKEN_ERROR);
+    }
+
     return { access_token };
   }
 
   async getAuthAccessToken() {
-    const url = `${this.ISSUER_BASE_URL}oauth/token`;
-    const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-    const body = {
-      grant_type: 'client_credentials',
-      client_id: this.CLIENT_ID,
-      client_secret: this.CLIENT_SECRET,
-      audience: this.AUDIENCE,
-    };
-    const response = await fetch(url, {
-      method: 'POST',
-      headers,
-      body: new URLSearchParams(body),
-    });
-    const data = await response.json();
-    return data.access_token;
+    try {
+      const url = `${this.ISSUER_BASE_URL}oauth/token`;
+      const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      };
+      const body = {
+        grant_type: 'client_credentials',
+        client_id: this.CLIENT_ID,
+        client_secret: this.CLIENT_SECRET,
+        audience: this.AUDIENCE,
+      };
+      const response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: new URLSearchParams(body),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.access_token;
+    } catch (error) {
+      throw new Error(ACCESS_TOKEN_ERROR);
+    }
   }
 }
