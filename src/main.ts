@@ -49,10 +49,22 @@ async function bootstrap() {
       helmet({
         hsts: { maxAge: 31536000 },
         frameguard: { action: 'deny' },
+        crossOriginEmbedderPolicy: false,
         contentSecurityPolicy: {
           directives: {
             'default-src': ["'self'"],
             'frame-ancestors': ["'none'"],
+            imgSrc: [
+              `'self'`,
+              'data:',
+              'apollo-server-landing-page.cdn.apollographql.com',
+            ],
+            scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+            manifestSrc: [
+              `'self'`,
+              'apollo-server-landing-page.cdn.apollographql.com',
+            ],
+            frameSrc: [`'self'`, 'sandbox.embed.apollographql.com'],
           },
         },
       }),
