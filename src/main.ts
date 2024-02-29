@@ -1,10 +1,7 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import * as cors from 'cors';
 import helmet from 'helmet';
-import * as nocache from 'nocache';
 import { AppModule } from './app/app.module';
 
 function checkEnvironment(configService: ConfigService) {
@@ -22,27 +19,28 @@ function checkEnvironment(configService: ConfigService) {
     }
   });
 }
-
 async function bootstrap() {
-  console.log('started');
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const configService = app.get<ConfigService>(ConfigService);
   checkEnvironment(configService);
 
-  app.use(nocache());
+  /* NOCACHE */
+  app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    next();
+  });
 
-  app.use(
-    cors<cors.CorsRequest>({
-      origin: [
-        configService.get<string>('CLIENT_ORIGIN_URL'),
-        'http://localhost:4200',
-      ],
-      credentials: true,
-      allowedHeaders: ['Authorization', 'Content-Type'],
-      maxAge: 86400,
-    }),
-  );
+  /* CORS */
+  app.enableCors({
+    origin: ['http://localhost:4200'],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    credentials: true,
+    maxAge: 86400,
+  });
 
   if (configService.get<string>('NODE_ENV') !== 'development') {
     app.use(
