@@ -8,8 +8,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -45,8 +43,6 @@ import { UserModule } from './user/user.module';
         limit: 100,
       },
     ]),
-    UserModule,
-    AuthModule,
   ],
   controllers: [],
   providers: [AppService, AppResolver],
