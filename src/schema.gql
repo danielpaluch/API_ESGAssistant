@@ -2,60 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  _id: String!
-  firstName: String!
-  lastName: String!
-  email: String!
-  password: String!
-  role: String!
-  phone: String!
-  company: String!
-  access_token: String!
+type EmissionReport {
+  name: String!
+  description: String!
+  author: String!
+  createdAt: DateTime!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
   getHello: String!
-  users: [User!]!
-  userById(id: String!): User!
-  userByEmail(email: String!): User!
-  login(loginUserInput: LoginUserInput!): User!
-}
-
-input LoginUserInput {
-  email: String!
-  password: String!
-}
-
-type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  updatePassword(updatePasswordInput: UpdatePasswordInput!): User!
-  removeUser(id: Int!): User!
-}
-
-input CreateUserInput {
-  firstName: String!
-  lastName: String!
-  email: String!
-  password: String!
-  role: String!
-  phone: String!
-  company: String!
-}
-
-input UpdateUserInput {
-  firstName: String
-  lastName: String
-  email: String
-  password: String
-  role: String
-  phone: String
-  company: String
-  _id: String!
-}
-
-input UpdatePasswordInput {
-  _id: String!
-  password: String!
+  emissionReport: EmissionReport!
 }

@@ -9,6 +9,9 @@ import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
 
+import { EmissionResolver } from './emission/emission.resolver';
+import { EmissionService } from './emission/emission.service';
+
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -45,6 +48,6 @@ import { AppService } from './app.service';
     ]),
   ],
   controllers: [],
-  providers: [AppService, AppResolver],
+  providers: [AppService, AppResolver, EmissionService, EmissionResolver],
 })
 export class AppModule {}
