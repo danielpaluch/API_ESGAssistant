@@ -2,11 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+interface EmissionData {
+  type: EmissionType!
+}
+
+enum EmissionType {
+  FUEL
+}
+
 type EmissionReport {
   name: String!
   description: String!
+  emission_data_arr: [EmissionData!]!
   author: String!
-  createdAt: DateTime!
+  created_at: DateTime!
 }
 
 """
@@ -14,7 +23,90 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Fuel implements EmissionData {
+  type: EmissionType!
+  fuelGroup: FuelGroup!
+  fuelType: FuelType!
+  unit: FuelUnit!
+  usedFuel: Float!
+  totalCO2e: Float!
+  totalCO2: Float!
+  totalCH4: Float!
+  totalN2O: Float!
+}
+
+enum FuelGroup {
+  GaseousFuels
+  LiquidFuels
+  SolidFuels
+  BiofuelsBiomass
+}
+
+enum FuelType {
+  Butane
+  CNG
+  LNG
+  LPG
+  NaturalGas
+  NaturalGas100MineralBlend
+  OtherPetroleumGas
+  Propane
+  AviationSpirit
+  AviationTurbineFuel
+  BurningOil
+  DieselAverageBiofuelBlend
+  Diesel100MineralDiesel
+  FuelOil
+  GasOil
+  Naphtha
+  PetrolAverageBiofuelBlend
+  Petrol100MineralPetrol
+  ProcessedFuelOilsResidualOil
+  ProcessedFuelOilsDistillateOil
+  WasteOils
+  MarineGasOil
+  MarineFuelOil
+  CoalIndustrial
+  CoalElectricityGeneration
+  CoalDomestic
+  CokingCoal
+  PetroleumCoke
+  CoalElectricityGenerationHomeProducedCoalOnly
+  Bioethanol
+  BiodieselME
+  BiomethaneCompressed
+  BiodieselMEFromUsedCookingOil
+  BiodieselMEFromTallow
+  BiodieselHVO
+  Biopropane
+  DevelopmentDiesel
+  DevelopmentPetrol
+  OffRoadBiodiesel
+  BiomethaneLiquified
+  MethanolBio
+  AvturRenewable
+  WoodLogs
+  WoodChips
+  WoodPellets
+  GrassStraw
+  Biogas
+  LandfillGas
+}
+
+enum FuelUnit {
+  Tonnes
+  Litres
+  CubicMetres
+  KWhNetCv
+  KWhGrossCv
+  GJ
+  Kg
+}
+
 type Query {
   getHello: String!
+}
+
+type Mutation {
   emissionReport: EmissionReport!
 }
