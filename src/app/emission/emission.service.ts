@@ -7,7 +7,7 @@ import { Fuel, FuelGroup, FuelUnit } from './models/fuel.model';
 export class EmissionService {
   async emissionReport(): Promise<EmissionReport> {
     const emissionData: Fuel = {
-      type: EmissionType.FUEL,
+      type: EmissionType.Fuel,
       fuelGroup: FuelGroup.GaseousFuels,
       fuelType: FuelType.Butane,
       unit: FuelUnit.Litres,

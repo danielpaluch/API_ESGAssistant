@@ -6,19 +6,25 @@ import {
 } from '@nestjs/graphql';
 
 export enum EmissionType {
-  FUEL = 'FUEL',
+  Fuel = 'Fuel',
 }
 
-@InterfaceType()
+registerEnumType(EmissionType, { name: 'EmissionType' });
+
+@InterfaceType({
+  resolveType: (value) => {
+    if (value.type === EmissionType.Fuel) {
+      return 'Fuel';
+    }
+  },
+})
 export abstract class EmissionData {
   @Field((type) => EmissionType)
   type: EmissionType;
 }
 
-registerEnumType(EmissionType, { name: 'EmissionType' });
-
 @ObjectType()
-export class EmissionReport {
+export class EmissionReport{
   @Field((type) => String)
   name: string;
 
