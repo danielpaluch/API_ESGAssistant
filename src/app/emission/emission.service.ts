@@ -7,7 +7,7 @@ import { Water, WaterType, WaterUnit } from './models/water.model';
 
 @Injectable()
 export class EmissionService {
-  async emissionReport(): Promise<EmissionReport> {
+  async createEmissionReport(): Promise<EmissionReport> {
     const fuelEmission: Fuel = {
       type: EmissionType.Fuel,
       fuelGroup: FuelGroup.GaseousFuels,
@@ -45,5 +45,20 @@ export class EmissionService {
     };
 
     return report;
+  }
+
+  // Get the emission report
+  async getAllEmissionReports(): Promise<EmissionReport[]> {
+    return await this.getAllEmissionReports();
+  }
+
+  // Get the emission report by id
+  async getEmissionReportById(id: string): Promise<EmissionReport> {
+    return await this.getEmissionReportById(id);
+  }
+
+  // Delete the emission report by id
+  async deleteEmissionReportById(id: string): Promise<EmissionReport> {
+    return await this.deleteEmissionReportById(id);
   }
 }
