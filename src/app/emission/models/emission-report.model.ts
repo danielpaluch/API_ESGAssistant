@@ -7,6 +7,8 @@ import {
 
 export enum EmissionType {
   Fuel = 'Fuel',
+  Electricity = 'Electricity',
+  Water = 'Water'
 }
 
 registerEnumType(EmissionType, { name: 'EmissionType' });
@@ -15,6 +17,14 @@ registerEnumType(EmissionType, { name: 'EmissionType' });
   resolveType: (value) => {
     if (value.type === EmissionType.Fuel) {
       return 'Fuel';
+    }
+
+    if (value.type === EmissionType.Electricity) {
+      return 'Electricity';
+    }
+
+    if (value.type === EmissionType.Water) {
+      return 'Water';
     }
   },
 })

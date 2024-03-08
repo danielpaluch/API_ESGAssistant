@@ -78,7 +78,7 @@ registerEnumType(FuelUnit, { name: 'FuelUnit' });
 @ObjectType({ implements: () => [EmissionData] })
 export class Fuel implements EmissionData {
   @Field((type) => EmissionType)
-  type: EmissionType;
+  type: EmissionType.Fuel;
 
   @Field((type) => FuelGroup)
   fuelGroup: FuelGroup; // Select field
