@@ -10,9 +10,6 @@ function checkEnvironment(configService: ConfigService) {
   const requiredEnvVars = [
     'DATABASE_URL',
     'PORT',
-    'ISSUER_BASE_URL',
-    'AUDIENCE',
-    'CLIENT_ORIGIN_URL',
   ];
 
   requiredEnvVars.forEach((envVar) => {

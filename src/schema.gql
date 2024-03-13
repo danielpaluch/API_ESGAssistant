@@ -7,7 +7,9 @@ interface EmissionData {
 }
 
 enum EmissionType {
-  FUEL
+  Fuel
+  Electricity
+  Water
 }
 
 type EmissionReport {
@@ -101,6 +103,39 @@ enum FuelUnit {
   KWhGrossCv
   GJ
   Kg
+}
+
+type Electricity implements EmissionData {
+  type: EmissionType!
+  electricitySource: ElectricitySource!
+  electricityUnit: ElectricityUnit!
+  usedElectricity: Float!
+  totalCO2e: Float!
+}
+
+enum ElectricitySource {
+  Default
+}
+
+enum ElectricityUnit {
+  Mwh
+}
+
+type Water implements EmissionData {
+  type: EmissionType!
+  waterType: WaterType!
+  waterUnit: WaterUnit!
+  waterUsed: Float!
+  totalCO2e: Float!
+}
+
+enum WaterType {
+  WaterSupply
+  WaterTreatment
+}
+
+enum WaterUnit {
+  CubicMetres
 }
 
 type Query {
