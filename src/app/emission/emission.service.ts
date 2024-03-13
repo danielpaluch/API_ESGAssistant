@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { FuelType } from '../interfaces/emission/fuels';
 import { EmissionReport, EmissionType } from './models/emission-report.model';
-import { Fuel, FuelGroup, FuelUnit } from './models/fuel.model';
+import { Fuel, FuelGroup, FuelUnit, FuelType } from './models/fuel.model';
 
 @Injectable()
 export class EmissionService {

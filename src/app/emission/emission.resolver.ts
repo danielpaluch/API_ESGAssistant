@@ -1,4 +1,4 @@
-import { Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Mutation, Resolver } from '@nestjs/graphql';
 import { EmissionService } from './emission.service';
 import { EmissionReport } from './models/emission-report.model';
 
