@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { EmissionReport, EmissionType } from './models/emission-report.model';
+import { Injectable, Inject } from '@nestjs/common';
+import { EmissionReport, EmissionReportDocument, EmissionType } from './models/emission-report.model';
 import { Fuel, FuelGroup, FuelUnit, FuelType } from './models/fuel.model';
 import { Electricity, ElectricitySource, ElectricityUnit } from './models/electricity.model';
 import { Water, WaterType, WaterUnit } from './models/water.model';
+import { Model, Schema as MongooseSchema } from "mongoose";
+import {InjectModel} from '@nestjs/mongoose';
 
 @Injectable()
 export class EmissionService {
+  constructor(@InjectModel(EmissionReport.name) private emissionModel: Model<EmissionReportDocument>) {}
+
   async createEmissionReport(): Promise<EmissionReport> {
     const fuelEmission: Fuel = {
       type: EmissionType.Fuel,

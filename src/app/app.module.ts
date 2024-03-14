@@ -8,9 +8,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
-
-import { EmissionResolver } from './emission/emission.resolver';
-import { EmissionService } from './emission/emission.service';
+import { EmissionModule } from './emission/emission.module';
 
 @Module({
   imports: [
@@ -46,8 +44,9 @@ import { EmissionService } from './emission/emission.service';
         limit: 100,
       },
     ]),
+    EmissionModule
   ],
-  controllers: [],
-  providers: [AppService, AppResolver, EmissionService, EmissionResolver],
+  controllers: [AppResolver],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -4,6 +4,8 @@ import {
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
+import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export enum EmissionType {
   Fuel = 'Fuel',
@@ -34,19 +36,29 @@ export abstract class EmissionData {
 }
 
 @ObjectType()
+@Schema()
 export class EmissionReport{
   @Field(() => String)
+  @Prop()
   name: string;
 
   @Field(() => String)
+  @Prop()
   description: string;
 
   @Field(() => [EmissionData])
+  @Prop()
   emission_data_arr: EmissionData[];
 
   @Field(() => String)
+  @Prop()
   author: string;
 
   @Field(() => Date)
+  @Prop()
   created_at: Date;
 }
+
+export type EmissionReportDocument = EmissionReport & Document;
+export const EmissionReportSchema = SchemaFactory.createForClass(EmissionReport);
+

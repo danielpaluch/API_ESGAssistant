@@ -139,9 +139,11 @@ enum WaterUnit {
 }
 
 type Query {
-  getHello: String!
+  getAllEmissionReports: [EmissionReport!]!
+  getEmissionReportById(id: String!): EmissionReport!
 }
 
 type Mutation {
-  emissionReport: EmissionReport!
+  createEmissionReport: EmissionReport!
+  deleteEmissionReportById(id: String!): EmissionReport!
 }

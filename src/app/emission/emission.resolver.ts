@@ -2,7 +2,7 @@ import { Mutation, Resolver, Query, Args } from '@nestjs/graphql';
 import { EmissionService } from './emission.service';
 import { EmissionReport } from './models/emission-report.model';
 
-@Resolver()
+@Resolver(() => EmissionReport)
 export class EmissionResolver {
   constructor(private readonly emissionService: EmissionService) {}
 
