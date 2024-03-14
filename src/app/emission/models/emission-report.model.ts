@@ -29,24 +29,24 @@ registerEnumType(EmissionType, { name: 'EmissionType' });
   },
 })
 export abstract class EmissionData {
-  @Field((type) => EmissionType)
+  @Field(() => EmissionType)
   type: EmissionType;
 }
 
 @ObjectType()
 export class EmissionReport{
-  @Field((type) => String)
+  @Field(() => String)
   name: string;
 
-  @Field((type) => String)
+  @Field(() => String)
   description: string;
 
-  @Field((type) => [EmissionData])
+  @Field(() => [EmissionData])
   emission_data_arr: EmissionData[];
 
-  @Field((type) => String)
+  @Field(() => String)
   author: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   created_at: Date;
 }

@@ -77,30 +77,30 @@ registerEnumType(FuelUnit, { name: 'FuelUnit' });
 
 @ObjectType({ implements: () => [EmissionData] })
 export class Fuel implements EmissionData {
-  @Field((type) => EmissionType)
+  @Field(() => EmissionType)
   type: EmissionType.Fuel;
 
-  @Field((type) => FuelGroup)
+  @Field(() => FuelGroup)
   fuelGroup: FuelGroup; // Select field
 
-  @Field((type) => FuelType)
+  @Field(() => FuelType)
   fuelType: FuelType; // Select field
 
-  @Field((type) => FuelUnit)
+  @Field(() => FuelUnit)
   unit: FuelUnit; // Select field
 
-  @Field((type) => Float)
+  @Field(() => Float)
   usedFuel: number; // Number field
 
-  @Field((type) => Float)
+  @Field(() => Float)
   totalCO2e: number; // Calculation based on usedFuel
 
-  @Field((type) => Float)
+  @Field(() => Float)
   totalCO2?: number; // Calculation based on usedFuel
 
-  @Field((type) => Float)
+  @Field(() => Float)
   totalCH4?: number; // Calculation based on usedFuel
 
-  @Field((type) => Float)
+  @Field(() => Float)
   totalN2O?: number; // Calculation based on usedFuel
 }

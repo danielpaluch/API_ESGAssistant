@@ -18,19 +18,19 @@ registerEnumType(ElectricityUnit, { name: 'ElectricityUnit' })
 
 @ObjectType({ implements: EmissionData})
 export class Electricity implements EmissionData {
-  @Field((type) => EmissionType)
+  @Field(() => EmissionType)
   type: EmissionType.Electricity;
 
-  @Field(type => ElectricitySource)
+  @Field(() => ElectricitySource)
   electricitySource: ElectricitySource.Default
 
-  @Field(type => ElectricityUnit)
+  @Field(() => ElectricityUnit)
   electricityUnit: ElectricityUnit.Mwh
 
-  @Field(type => Float)
+  @Field(() => Float)
   usedElectricity: number
 
-  @Field(type => Float)
+  @Field(() => Float)
   totalCO2e: number
 }
 
