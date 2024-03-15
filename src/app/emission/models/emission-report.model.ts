@@ -1,10 +1,10 @@
 import {
-  Field,
+  Field, InputType,
   InterfaceType,
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export enum EmissionType {
@@ -38,6 +38,9 @@ export abstract class EmissionData {
 @ObjectType()
 @Schema()
 export class EmissionReport{
+  @Field(() => String)
+  _id?: MongooseSchema.Types.ObjectId
+
   @Field(() => String)
   @Prop()
   name: string;

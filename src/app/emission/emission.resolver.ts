@@ -1,6 +1,8 @@
 import { Mutation, Resolver, Query, Args } from '@nestjs/graphql';
 import { EmissionService } from './emission.service';
 import { EmissionReport } from './models/emission-report.model';
+import { Schema as MongooseSchema } from 'mongoose';
+import { CreateEmissionDto } from './dto/create-emission.dto';
 
 @Resolver(() => EmissionReport)
 export class EmissionResolver {
@@ -8,8 +10,14 @@ export class EmissionResolver {
 
   // Mutation for testing
   @Mutation(() => EmissionReport)
-  async createEmissionReport(): Promise<EmissionReport> {
-    return await this.emissionService.createEmissionReport();
+  async createEmissionReport(@Args('payload') payload: CreateEmissionDto): Promise<EmissionReport> {
+    return await this.emissionService.createEmissionReport(payload);
+  }
+
+  // Delete the emission report by id
+  @Mutation(() => EmissionReport)
+  async deleteEmissionReportById(@Args('_id', {type: () => String}) _id: MongooseSchema.Types.ObjectId): Promise<EmissionReport> {
+    return await this.emissionService.deleteEmissionReportById(_id);
   }
 
   // Query for getting all emission reports
@@ -20,13 +28,7 @@ export class EmissionResolver {
 
   // Query for getting the emission report by id
   @Query(() => EmissionReport)
-  async getEmissionReportById(@Args('id') id: string): Promise<EmissionReport> {
-    return await this.emissionService.getEmissionReportById(id);
-  }
-
-  // Delete the emission report by id
-  @Mutation(() => EmissionReport)
-  async deleteEmissionReportById(@Args('id') id: string): Promise<EmissionReport> {
-    return await this.emissionService.deleteEmissionReportById(id);
+  async getEmissionReportById(@Args('_id', {type: () => String}) _id: MongooseSchema.Types.ObjectId): Promise<EmissionReport> {
+    return await this.emissionService.getEmissionReportById(_id);
   }
 }
