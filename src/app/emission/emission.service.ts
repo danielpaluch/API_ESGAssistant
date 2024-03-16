@@ -12,41 +12,41 @@ export class EmissionService {
   constructor(@InjectModel(EmissionReport.name) private emissionModel: Model<EmissionReportDocument>) {}
 
   async createEmissionReport(payload: CreateEmissionDto): Promise<EmissionReport> {
-    // const fuelEmission: Fuel = {
-    //   type: EmissionType.Fuel,
-    //   fuelGroup: FuelGroup.GaseousFuels,
-    //   fuelType: FuelType.Butane,
-    //   unit: FuelUnit.Litres,
-    //   usedFuel: 10,
-    //   totalCO2e: 10,
-    //   totalCO2: 10,
-    //   totalCH4: 10,
-    //   totalN2O: 10,
-    // };
-    //
-    // const electricityEmission: Electricity = {
-    //   type: EmissionType.Electricity,
-    //   electricitySource: ElectricitySource.Default,
-    //   electricityUnit: ElectricityUnit.Mwh,
-    //   usedElectricity: 100,
-    //   totalCO2e: 100,
-    // }
-    //
-    // const waterEmmision: Water = {
-    //   type: EmissionType.Water,
-    //   waterType: WaterType.WaterSupply,
-    //   waterUnit: WaterUnit.CubicMetres,
-    //   waterUsed: 100,
-    //   totalCO2e: 100,
-    // }
-    //
-    // const report: EmissionReport = {
-    //   name: 'Name',
-    //   author: 'XD',
-    //   description: 'Description',
-    //   created_at: new Date(),
-    //   emission_data_arr: [fuelEmission, electricityEmission, waterEmmision],
-    // };
+    const fuelEmission: Fuel = {
+      type: EmissionType.Fuel,
+      fuelGroup: FuelGroup.GaseousFuels,
+      fuelType: FuelType.Butane,
+      unit: FuelUnit.Litres,
+      usedFuel: 10,
+      totalCO2e: 10,
+      totalCO2: 10,
+      totalCH4: 10,
+      totalN2O: 10,
+    };
+
+    const electricityEmission: Electricity = {
+      type: EmissionType.Electricity,
+      electricitySource: ElectricitySource.Default,
+      electricityUnit: ElectricityUnit.Mwh,
+      usedElectricity: 100,
+      totalCO2e: 100,
+    }
+
+    const waterEmmision: Water = {
+      type: EmissionType.Water,
+      waterType: WaterType.WaterSupply,
+      waterUnit: WaterUnit.CubicMetres,
+      waterUsed: 100,
+      totalCO2e: 100,
+    }
+
+    const report: EmissionReport = {
+      name: 'Name',
+      author: 'XD',
+      description: 'Description',
+      created_at: new Date(),
+      emission_data_arr: [fuelEmission, electricityEmission, waterEmmision],
+    };
 
     const emissionReportData: EmissionReport = {
       ...payload,

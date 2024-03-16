@@ -1,5 +1,5 @@
 import {
-  Field, InputType,
+  Field,
   InterfaceType,
   ObjectType,
   registerEnumType,
@@ -35,7 +35,7 @@ export abstract class EmissionData {
   type: EmissionType;
 }
 
-@ObjectType()
+@ObjectType({ description: "The main EmissionReport Model"})
 @Schema()
 export class EmissionReport{
   @Field(() => String)
