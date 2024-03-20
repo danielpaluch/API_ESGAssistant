@@ -2,60 +2,161 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+interface EmissionData {
+  type: EmissionType!
+}
+
+enum EmissionType {
+  Fuel
+  Electricity
+  Water
+}
+
+"""The main EmissionReport Model"""
+type EmissionReport {
   _id: String!
-  firstName: String!
-  lastName: String!
-  email: String!
-  password: String!
-  role: String!
-  phone: String!
-  company: String!
-  access_token: String!
+  name: String!
+  description: String!
+  emission_data_arr: [EmissionData!]!
+  author: String!
+  created_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Fuel implements EmissionData {
+  type: EmissionType!
+  fuelGroup: FuelGroup!
+  fuelType: FuelType!
+  unit: FuelUnit!
+  usedFuel: Float!
+  totalCO2e: Float!
+  totalCO2: Float!
+  totalCH4: Float!
+  totalN2O: Float!
+}
+
+enum FuelGroup {
+  GaseousFuels
+  LiquidFuels
+  SolidFuels
+  BiofuelsBiomass
+}
+
+enum FuelType {
+  Butane
+  CNG
+  LNG
+  LPG
+  NaturalGas
+  NaturalGas100MineralBlend
+  OtherPetroleumGas
+  Propane
+  AviationSpirit
+  AviationTurbineFuel
+  BurningOil
+  DieselAverageBiofuelBlend
+  Diesel100MineralDiesel
+  FuelOil
+  GasOil
+  Naphtha
+  PetrolAverageBiofuelBlend
+  Petrol100MineralPetrol
+  ProcessedFuelOilsResidualOil
+  ProcessedFuelOilsDistillateOil
+  WasteOils
+  MarineGasOil
+  MarineFuelOil
+  CoalIndustrial
+  CoalElectricityGeneration
+  CoalDomestic
+  CokingCoal
+  PetroleumCoke
+  CoalElectricityGenerationHomeProducedCoalOnly
+  Bioethanol
+  BiodieselME
+  BiomethaneCompressed
+  BiodieselMEFromUsedCookingOil
+  BiodieselMEFromTallow
+  BiodieselHVO
+  Biopropane
+  DevelopmentDiesel
+  DevelopmentPetrol
+  OffRoadBiodiesel
+  BiomethaneLiquified
+  MethanolBio
+  AvturRenewable
+  WoodLogs
+  WoodChips
+  WoodPellets
+  GrassStraw
+  Biogas
+  LandfillGas
+}
+
+enum FuelUnit {
+  Tonnes
+  Litres
+  CubicMetres
+  KWhNetCv
+  KWhGrossCv
+  GJ
+  Kg
+}
+
+type Electricity implements EmissionData {
+  type: EmissionType!
+  electricitySource: ElectricitySource!
+  electricityUnit: ElectricityUnit!
+  usedElectricity: Float!
+  totalCO2e: Float!
+}
+
+enum ElectricitySource {
+  Default
+}
+
+enum ElectricityUnit {
+  Mwh
+}
+
+type Water implements EmissionData {
+  type: EmissionType!
+  waterType: WaterType!
+  waterUnit: WaterUnit!
+  waterUsed: Float!
+  totalCO2e: Float!
+}
+
+enum WaterType {
+  WaterSupply
+  WaterTreatment
+}
+
+enum WaterUnit {
+  CubicMetres
 }
 
 type Query {
-  getHello: String!
-  users: [User!]!
-  userById(id: String!): User!
-  userByEmail(email: String!): User!
-  login(loginUserInput: LoginUserInput!): User!
-}
-
-input LoginUserInput {
-  email: String!
-  password: String!
+  getAllEmissionReports: [EmissionReport!]!
+  getEmissionReportById(_id: String!): EmissionReport!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  updatePassword(updatePasswordInput: UpdatePasswordInput!): User!
-  removeUser(id: Int!): User!
+  createEmissionReport(payload: CreateEmissionDto!): EmissionReport!
+  deleteEmissionReportById(_id: String!): EmissionReport!
 }
 
-input CreateUserInput {
-  firstName: String!
-  lastName: String!
-  email: String!
-  password: String!
-  role: String!
-  phone: String!
-  company: String!
+input CreateEmissionDto {
+  name: String!
+  description: String!
+  emission_data_arr: [CreateEmissionDataInput!]!
+  author: String!
 }
 
-input UpdateUserInput {
-  firstName: String
-  lastName: String
-  email: String
-  password: String
-  role: String
-  phone: String
-  company: String
-  _id: String!
-}
-
-input UpdatePasswordInput {
-  _id: String!
-  password: String!
+input CreateEmissionDataInput {
+  type: EmissionType!
 }

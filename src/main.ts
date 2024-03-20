@@ -8,9 +8,6 @@ function checkEnvironment(configService: ConfigService) {
   const requiredEnvVars = [
     'DATABASE_URL',
     'PORT',
-    'ISSUER_BASE_URL',
-    'AUDIENCE',
-    'CLIENT_ORIGIN_URL',
   ];
 
   requiredEnvVars.forEach((envVar) => {
@@ -47,10 +44,22 @@ async function bootstrap() {
       helmet({
         hsts: { maxAge: 31536000 },
         frameguard: { action: 'deny' },
+        crossOriginEmbedderPolicy: false,
         contentSecurityPolicy: {
           directives: {
             'default-src': ["'self'"],
             'frame-ancestors': ["'none'"],
+            imgSrc: [
+              `'self'`,
+              'data:',
+              'apollo-server-landing-page.cdn.apollographql.com',
+            ],
+            scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+            manifestSrc: [
+              `'self'`,
+              'apollo-server-landing-page.cdn.apollographql.com',
+            ],
+            frameSrc: [`'self'`, 'sandbox.embed.apollographql.com'],
           },
         },
       }),
@@ -59,4 +68,4 @@ async function bootstrap() {
 
   await app.listen(configService.get<string>('PORT'));
 }
-bootstrap();
+bootstrap().then(() => console.log('Server started'));
