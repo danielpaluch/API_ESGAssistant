@@ -2,7 +2,7 @@ import { Mutation, Resolver, Query, Args } from '@nestjs/graphql';
 import { EmissionService } from './emission.service';
 import { EmissionReport } from './models/emission-report.model';
 import { Schema as MongooseSchema } from 'mongoose';
-import { CreateEmissionDto } from './dto/create-emission.dto';
+import { CreateEmissionInput } from './dto/create-emission.input';
 
 @Resolver(() => EmissionReport)
 export class EmissionResolver {
@@ -10,7 +10,7 @@ export class EmissionResolver {
 
   // Mutation for testing
   @Mutation(() => EmissionReport)
-  async createEmissionReport(@Args('payload') payload: CreateEmissionDto): Promise<EmissionReport> {
+  async createEmissionReport(@Args('payload') payload: CreateEmissionInput): Promise<EmissionReport> {
     return await this.emissionService.createEmissionReport(payload);
   }
 

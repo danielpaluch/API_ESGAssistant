@@ -1,5 +1,6 @@
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { EmissionData, EmissionType } from './emission-report.model';
+import { CreateEmissionDataInput, CreateFuelModel } from '../dto/emission-data.input';
 
 export enum FuelGroup {
   GaseousFuels = 'Gaseous fuels',
@@ -77,6 +78,17 @@ registerEnumType(FuelUnit, { name: 'FuelUnit' });
 
 @ObjectType({ implements: () => [EmissionData] })
 export class Fuel implements EmissionData {
+  constructor(emissionData: CreateFuelModel) {
+    this.fuelGroup = emissionData.fuelGroup;
+    this.fuelType = emissionData.fuelType;
+    this.unit = emissionData.unit;
+    this.usedFuel = emissionData.usedFuel;
+    this.totalCO2e = emissionData.totalCO2e;
+    this.totalCO2 = emissionData.totalCO2;
+    this.totalCH4 = emissionData.totalCH4;
+    this.totalN2O = emissionData.totalN2O;
+  }
+
   @Field(() => EmissionType)
   type: EmissionType.Fuel;
 

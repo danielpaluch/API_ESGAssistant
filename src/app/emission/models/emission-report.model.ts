@@ -1,4 +1,5 @@
 import {
+  createUnionType,
   Field,
   InterfaceType,
   ObjectType,
@@ -6,6 +7,9 @@ import {
 } from '@nestjs/graphql';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Water } from './water.model';
+import { Electricity } from './electricity.model';
+import { Fuel } from './fuel.model';
 
 export enum EmissionType {
   Fuel = 'Fuel',

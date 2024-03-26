@@ -27,6 +27,22 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Electricity implements EmissionData {
+  type: EmissionType!
+  electricitySource: ElectricitySource!
+  electricityUnit: ElectricityUnit!
+  usedElectricity: Float!
+  totalCO2e: Float!
+}
+
+enum ElectricitySource {
+  Default
+}
+
+enum ElectricityUnit {
+  Mwh
+}
+
 type Fuel implements EmissionData {
   type: EmissionType!
   fuelGroup: FuelGroup!
@@ -107,50 +123,17 @@ enum FuelUnit {
   Kg
 }
 
-type Electricity implements EmissionData {
-  type: EmissionType!
-  electricitySource: ElectricitySource!
-  electricityUnit: ElectricityUnit!
-  usedElectricity: Float!
-  totalCO2e: Float!
-}
-
-enum ElectricitySource {
-  Default
-}
-
-enum ElectricityUnit {
-  Mwh
-}
-
-type Water implements EmissionData {
-  type: EmissionType!
-  waterType: WaterType!
-  waterUnit: WaterUnit!
-  waterUsed: Float!
-  totalCO2e: Float!
-}
-
-enum WaterType {
-  WaterSupply
-  WaterTreatment
-}
-
-enum WaterUnit {
-  CubicMetres
-}
-
 type Query {
   getAllEmissionReports: [EmissionReport!]!
   getEmissionReportById(_id: String!): EmissionReport!
 }
 
 type Mutation {
-  createEmissionReport(payload: CreateEmissionDto!): EmissionReport!
+  createEmissionReport(payload: CreateEmissionInput!): EmissionReport!
   deleteEmissionReportById(_id: String!): EmissionReport!
 }
 
-input CreateEmissionDto {
+input CreateEmissionInput {
   name: String!
   description: String!
   emission_data_arr: [CreateEmissionDataInput!]!
