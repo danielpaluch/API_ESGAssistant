@@ -9,14 +9,14 @@ export class EmissionResolver {
   constructor(private readonly emissionService: EmissionService) {}
 
   // Mutation for testing
-  @Mutation(() => EmissionReport)
-  async createEmissionReport(@Args('payload') payload: CreateEmissionInput): Promise<EmissionReport> {
+  @Mutation(() => Boolean)
+  async createEmissionReport(@Args('payload') payload: CreateEmissionInput): Promise<boolean> {
     return await this.emissionService.createEmissionReport(payload);
   }
 
   // Delete the emission report by id
-  @Mutation(() => EmissionReport)
-  async deleteEmissionReportById(@Args('_id', {type: () => String}) _id: MongooseSchema.Types.ObjectId): Promise<EmissionReport> {
+  @Mutation(() => Boolean)
+  async deleteEmissionReportById(@Args('_id', {type: () => String}) _id: MongooseSchema.Types.ObjectId): Promise<boolean> {
     return await this.emissionService.deleteEmissionReportById(_id);
   }
 

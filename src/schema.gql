@@ -43,6 +43,23 @@ enum ElectricityUnit {
   Mwh
 }
 
+type Water implements EmissionData {
+  type: EmissionType!
+  waterType: WaterType!
+  waterUnit: WaterUnit!
+  waterUsed: Float!
+  totalCO2e: Float!
+}
+
+enum WaterType {
+  WaterSupply
+  WaterTreatment
+}
+
+enum WaterUnit {
+  CubicMetres
+}
+
 type Fuel implements EmissionData {
   type: EmissionType!
   fuelGroup: FuelGroup!
@@ -129,8 +146,8 @@ type Query {
 }
 
 type Mutation {
-  createEmissionReport(payload: CreateEmissionInput!): EmissionReport!
-  deleteEmissionReportById(_id: String!): EmissionReport!
+  createEmissionReport(payload: CreateEmissionInput!): Boolean!
+  deleteEmissionReportById(_id: String!): Boolean!
 }
 
 input CreateEmissionInput {
@@ -142,4 +159,18 @@ input CreateEmissionInput {
 
 input CreateEmissionDataInput {
   type: EmissionType!
+  fuelGroup: FuelGroup
+  fuelType: FuelType
+  unit: FuelUnit
+  usedFuel: Float
+  electricitySource: ElectricitySource
+  electricityUnit: ElectricityUnit
+  usedElectricity: Float
+  totalCO2e: Float
+  totalCO2: Float
+  totalCH4: Float
+  totalN2O: Float
+  waterType: WaterType
+  waterUnit: WaterUnit
+  waterUsed: Float
 }

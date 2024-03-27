@@ -6,47 +6,13 @@ import { Water, WaterType, WaterUnit } from './models/water.model';
 import { Model, Schema as MongooseSchema } from "mongoose";
 import {InjectModel} from '@nestjs/mongoose';
 import { CreateEmissionInput } from './dto/create-emission.input';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class EmissionService {
   constructor(@InjectModel(EmissionReport.name) private emissionModel: Model<EmissionReportDocument>) {}
 
-  async createEmissionReport(payload: CreateEmissionInput): Promise<EmissionReport> {
-    // const fuelEmission: Fuel = {
-    //   type: EmissionType.Fuel,
-    //   fuelGroup: FuelGroup.GaseousFuels,
-    //   fuelType: FuelType.Butane,
-    //   unit: FuelUnit.Litres,
-    //   usedFuel: 10,
-    //   totalCO2e: 10,
-    //   totalCO2: 10,
-    //   totalCH4: 10,
-    //   totalN2O: 10,
-    // };
-    //
-    // const electricityEmission: Electricity = {
-    //   type: EmissionType.Electricity,
-    //   electricitySource: ElectricitySource.Default,
-    //   electricityUnit: ElectricityUnit.Mwh,
-    //   usedElectricity: 100,
-    //   totalCO2e: 100,
-    // }
-    //
-    // const waterEmmision: Water = {
-    //   type: EmissionType.Water,
-    //   waterType: WaterType.WaterSupply,
-    //   waterUnit: WaterUnit.CubicMetres,
-    //   waterUsed: 100,
-    //   totalCO2e: 100,
-    // }
-    //
-    // const report: EmissionReport = {
-    //   name: 'Name',
-    //   author: 'XD',
-    //   description: 'Description',
-    //   created_at: new Date(),
-    //   emission_data_arr: [fuelEmission, electricityEmission, waterEmmision],
-    // };
+  async createEmissionReport(payload: CreateEmissionInput): Promise<boolean> {
     try {
       const emissionDataArr = payload.emission_data_arr.map((emissionData: any) => {
         if(emissionData.type === EmissionType.Fuel) {
@@ -55,40 +21,48 @@ export class EmissionService {
         if(emissionData.type === EmissionType.Electricity) {
           return new Electricity(emissionData);
         }
+        if(emissionData.type === EmissionType.Water) {
+          return new Water(emissionData);
+        }
       })
-
-      console.log(emissionDataArr)
 
       const emissionReportData: EmissionReport = {
         ...payload,
         created_at: new Date()
       }
 
-
-
       const emissionReportModel = new this.emissionModel(emissionReportData);
-      const createdEmissionReport = await emissionReportModel.save()
+      await emissionReportModel.save()
 
-      return createdEmissionReport
+      return true
     } catch (error) {
-      console.log(error.message)
       throw new BadRequestException(error.message)
     }
 
   }
 
   // Delete the emission report by id
-  async deleteEmissionReportById(_id: MongooseSchema.Types.ObjectId): Promise<EmissionReport> {
-    return this.emissionModel.findByIdAndDelete(_id)
+  async deleteEmissionReportById(_id: MongooseSchema.Types.ObjectId): Promise<boolean> {
+    try {
+      const deletedReport = this.emissionModel.findByIdAndDelete(_id).lean()
+
+      if (!deletedReport) {
+        throw new BadRequestException('The report does not exist or has already been deleted')
+      }
+
+      return true
+    } catch (error) {
+      throw new BadRequestException(error.message)
+    }
   }
 
   // Get the emission report
   async getAllEmissionReports(): Promise<EmissionReport[]> {
-    return this.emissionModel.find()
+    return this.emissionModel.find().lean()
   }
 
   // Get the emission report by id
   async getEmissionReportById(_id: MongooseSchema.Types.ObjectId): Promise<EmissionReport> {
-    return this.emissionModel.findById(_id);
+    return this.emissionModel.findById(_id).lean();
   }
 }
