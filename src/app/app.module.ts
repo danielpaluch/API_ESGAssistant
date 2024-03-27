@@ -14,9 +14,9 @@ import { EmissionModule } from './emission/emission.module';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      autoSchemaFile: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
