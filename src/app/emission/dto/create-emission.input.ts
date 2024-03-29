@@ -1,11 +1,11 @@
 import { IsString, IsArray, IsNotEmpty, ValidateNested } from 'class-validator';
 import { EmissionData } from '../models/emission-report.model';
 import { InputType, Field } from '@nestjs/graphql';
-import { CreateEmissionDataInput } from './emission-data.dto';
+import { CreateEmissionDataInput } from './emission-data.input';
 import { Type } from 'class-transformer'
 
 @InputType()
-export class CreateEmissionDto {
+export class CreateEmissionInput {
     @IsString()
     @IsNotEmpty()
     @Field(() => String!)
