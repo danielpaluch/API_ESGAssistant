@@ -1,5 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { EmissionReport, EmissionReportDocument, EmissionType } from './models/emission-report.model';
+import {
+  EmissionReport,
+  EmissionReportDocument,
+  EmissionType,
+} from './models/emission-report.model';
 import { Fuel, FuelGroup, FuelUnit, FuelType } from './models/fuel.model';
 import { Electricity, ElectricitySource, ElectricityUnit } from './models/electricity.model';
 import { Water, WaterType, WaterUnit } from './models/water.model';
@@ -12,7 +16,7 @@ import { NotFoundError } from 'rxjs';
 export class EmissionService {
   constructor(@InjectModel(EmissionReport.name) private emissionModel: Model<EmissionReportDocument>) {}
 
-  async createEmissionReport(payload: CreateEmissionInput): Promise<boolean> {
+  async createEmissionReport(payload: CreateEmissionInput): Promise<EmissionReport> {
     try {
       const emissionDataArr = payload.emission_data_arr.map((emissionData: any) => {
         if(emissionData.type === EmissionType.Fuel) {
@@ -32,9 +36,8 @@ export class EmissionService {
       }
 
       const emissionReportModel = new this.emissionModel(emissionReportData);
-      await emissionReportModel.save()
 
-      return true
+      return await emissionReportModel.save()
     } catch (error) {
       throw new BadRequestException(error.message)
     }
@@ -42,7 +45,7 @@ export class EmissionService {
   }
 
   // Delete the emission report by id
-  async deleteEmissionReportById(_id: MongooseSchema.Types.ObjectId): Promise<boolean> {
+  async deleteEmissionReportById(_id: MongooseSchema.Types.ObjectId): Promise<EmissionReport> {
     try {
       const deletedReport = this.emissionModel.findByIdAndDelete(_id).lean()
 
@@ -50,7 +53,7 @@ export class EmissionService {
         throw new BadRequestException('The report does not exist or has already been deleted')
       }
 
-      return true
+      return deletedReport
     } catch (error) {
       throw new BadRequestException(error.message)
     }

@@ -67,5 +67,4 @@ export class EmissionReport{
 }
 
 export type EmissionReportDocument = EmissionReport & Document;
-export const EmissionReportSchema = SchemaFactory.createForClass(EmissionReport);
-
+export const EmissionReportSchema = SchemaFactory.createForClass(EmissionReport)
