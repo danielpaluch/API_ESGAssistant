@@ -9,6 +9,8 @@ import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
 import { EmissionModule } from './emission/emission.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -44,7 +46,9 @@ import { EmissionModule } from './emission/emission.module';
         limit: 100,
       },
     ]),
-    EmissionModule
+    EmissionModule,
+    AuthModule,
+    UsersModule
   ],
   controllers: [AppResolver],
   providers: [AppService],
