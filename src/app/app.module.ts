@@ -5,12 +5,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
 import { EmissionModule } from './emission/emission.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -48,7 +47,7 @@ import { UsersModule } from './users/users.module';
     ]),
     EmissionModule,
     AuthModule,
-    UsersModule
+    UserModule
   ],
   controllers: [AppResolver],
   providers: [AppService],
