@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
 import { AuthGuard } from '../auth/auth.guard';
+import { GqlAuthGuard } from '../auth/gql-auth.guard';
 import { CreateUserInput } from './dto/create-user.input';
 import { LoginUserInput } from './dto/login-user.input';
 import { UpdatePasswordInput } from './dto/update-password.input';
@@ -25,7 +26,7 @@ export class UserResolver {
   //   return this.userService.validateUser(loginUserInput);
   // }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Query(() => [User], { name: 'users' })
   getAllUsers() {
     return this.userService.getAllUsers();

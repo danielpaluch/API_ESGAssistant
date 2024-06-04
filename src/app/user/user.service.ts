@@ -35,6 +35,10 @@ export class UserService {
     return createdUser.save();
   }
 
+
+  // Login user data
+  // jonhfork@gmail.com
+  // johnFork1!
   async validateUser(loginInput: LoginUserInput) {
     const { email, password } = loginInput;
 
@@ -62,7 +66,7 @@ export class UserService {
   }
 
   async getUserByEmail(email: string) {
-    return await this.userModel.findOne({ email });
+    return this.userModel.findOne({ email });
   }
 
   async updateUser(
