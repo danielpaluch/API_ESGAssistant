@@ -36,9 +36,9 @@ export class User {
   @Prop({ required: true })
   company: string;
 
-  @Field(() => String)
-  @Prop()
-  access_token: string;
+  // @Field(() => String)
+  // @Prop()
+  // access_token: string;
 }
 
 export type UserDocument = User & Document;
