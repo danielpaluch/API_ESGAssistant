@@ -6,6 +6,10 @@ import { User, UserSchema } from './entities/user.entity';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { JwtModule } from '@nestjs/jwt';
+import { registerEnumType } from '@nestjs/graphql';
+import { Role } from '../enums/role.enum';
+
+registerEnumType(Role, { name: 'Role' });
 
 @Module({
   imports: [

@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { EmissionModule } from './emission/emission.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { RolesGuard } from './guards/roles.guard';
 
 @Module({
   imports: [
@@ -50,6 +51,9 @@ import { UserModule } from './user/user.module';
     UserModule
   ],
   controllers: [AppResolver],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: 'APP_GUARD',
+    useClass: RolesGuard
+  }],
 })
 export class AppModule {}
