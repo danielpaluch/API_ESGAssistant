@@ -1,6 +1,7 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Role } from '../../enums/role.enum';
 
 @ObjectType()
 @Schema()
@@ -24,9 +25,9 @@ export class User {
   @Prop({ required: true })
   password: string;
 
-  @Field(() => String)
+  @Field(() => [Role])
   @Prop({ required: true })
-  role: string;
+  roles: Role[];
 
   @Field(() => String)
   @Prop({ required: true })
@@ -35,10 +36,6 @@ export class User {
   @Field(() => String)
   @Prop({ required: true })
   company: string;
-
-  // @Field(() => String)
-  // @Prop()
-  // access_token: string;
 }
 
 export type UserDocument = User & Document;

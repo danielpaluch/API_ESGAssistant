@@ -1,14 +1,15 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
-import { AuthGuard } from '../auth/auth.guard';
-import { GqlAuthGuard } from '../auth/gql-auth.guard';
+import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { CreateUserInput } from './dto/create-user.input';
-import { LoginUserInput } from './dto/login-user.input';
 import { UpdatePasswordInput } from './dto/update-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -21,18 +22,14 @@ export class UserResolver {
     return this.userService.createUser(createUserInput);
   }
 
-  // @Query(() => User, { name: 'login' })
-  // login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
-  //   return this.userService.validateUser(loginUserInput);
-  // }
-
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.HEAD)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Query(() => [User], { name: 'users' })
   getAllUsers() {
     return this.userService.getAllUsers();
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Query(() => User, { name: 'userById' })
   getUserById(
     @Args('id', { type: () => String }) id: MongooseSchema.Types.ObjectId,
@@ -40,19 +37,19 @@ export class UserResolver {
     return this.userService.getUserById(id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Query(() => User, { name: 'userByEmail' })
   getUserByEmail(@Args('email') email: string) {
     return this.userService.getUserByEmail(email);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   updatePassword(
     @Args('updatePasswordInput') updatePasswordInput: UpdatePasswordInput,
@@ -60,7 +57,7 @@ export class UserResolver {
     return this.userService.updatePassword(updatePasswordInput);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   removeUser(
     @Args('id', { type: () => Int }) id: MongooseSchema.Types.ObjectId,
