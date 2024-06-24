@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from './auth.guard';
 import { SignInInput } from './dto/signin.input';
+import { GqlAuthGuard } from './guards/gql-auth.guard';
 
 @Controller('auth')
 export class AuthResolver {
@@ -13,8 +13,8 @@ export class AuthResolver {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
-  @UseGuards(AuthGuard)
   @Get('profile')
+  @UseGuards(GqlAuthGuard)
   getProfile(@Request() req) {
     return req.user;
   }

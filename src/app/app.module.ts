@@ -10,7 +10,7 @@ import { AppService } from './app.service';
 import { EmissionModule } from './emission/emission.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { RolesGuard } from './guards/roles.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -33,6 +33,7 @@ import { RolesGuard } from './guards/roles.guard';
     }),
     ConfigModule.forRoot({
       cache: true,
+      isGlobal: true,
     }),
     ThrottlerModule.forRoot([
       {
@@ -51,9 +52,6 @@ import { RolesGuard } from './guards/roles.guard';
     UserModule
   ],
   controllers: [AppResolver],
-  providers: [AppService, {
-    provide: 'APP_GUARD',
-    useClass: RolesGuard
-  }],
+  providers: [AppService],
 })
 export class AppModule {}

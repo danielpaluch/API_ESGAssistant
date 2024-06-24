@@ -39,6 +39,8 @@ export class UserService {
   // Login user data
   // jonhfork@gmail.com
   // johnFork1!
+  // Fix: Should i avoid returning password in response?
+  // e.g. const { password: userPassword, ...result } = user;
   async validateUser(loginInput: LoginUserInput) {
     const { email, password } = loginInput;
 
